@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JOYFIT24経堂 キャンペーン動画</title>
+<style>
+  /* 全体のリセットと背景設定 */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #111;
+    /* ジムのマットや鉄板を思わせるカーボン風パターン */
+    background-image: 
+      repeating-linear-gradient(45deg, #1a1a1a 25%, transparent 25%, transparent 75%, #1a1a1a 75%, #1a1a1a),
+      repeating-linear-gradient(45deg, #1a1a1a 25%, #111 25%, #111 75%, #1a1a1a 75%, #1a1a1a);
+    background-position: 0 0, 10px 10px;
+    background-size: 20px 20px;
+    overflow: hidden;
+    font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+  }
+
+  /* 背景の熱気アニメーション用キャンバス */
+  #bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.8;
+  }
+
+  /* テキストを重ねるコンテナ */
+  #text-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  /* 店舗名 */
+  .store-name {
+    color: #fff;
+    font-size: 4vw;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 1vh;
+    opacity: 0;
+    animation: slideDown 0.5s ease-out forwards 0.2s;
+  }
+
+  /* キャンペーン名 */
+  .campaign {
+    color: #fff;
+    font-size: 6vw;
+    font-weight: 900;
+    margin-bottom: 3vh;
+    opacity: 0;
+    animation: slideDown 0.5s ease-out forwards 0.4s;
+  }
+
+  /* --- 追加: 最も目立たせる価格表記 --- */
+  .price-box {
+    position: relative;
+    margin-bottom: 4vh;
+    opacity: 0;
+    transform: scale(3);
+    /* スタンプのようにドカンと現れる */
+    animation: stampIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
+  }
+  
+  /* 後ろの赤い光彩 */
+  .price-box::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(230,0,18,0.8) 0%, rgba(230,0,18,0) 70%);
+    z-index: -1;
+    animation: pulseLight 1.5s infinite 1.4s;
+  }
+
+  .price-text {
+    color: #ffe600; /* 目立つイエロー */
+    font-size: 14vw;
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 
+      3px 3px 0 #e60012,
+      -1px -1px 0 #e60012,  
+      1px -1px 0 #e60012,
+      -1px 1px 0 #e60012,
+      1px 1px 0 #e60012,
+      0 10px 20px rgba(0,0,0,0.8);
+    margin: 0;
+  }
+  
+  .price-sub {
+    color: #fff;
+    font-size: 5vw;
+    display: block;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    margin-bottom: -1vh;
+  }
+
+  /* 限定人数のボックス */
+  .limit-box {
+    background: #e60012;
+    border: 3px solid #fff;
+    color: #ffffff;
+    padding: 1.5vh 8vw;
+    transform: skewX(-15deg); /* ジムらしいスピード感ある斜めデザイン */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards 1.6s;
+  }
+
+  .limit-text {
+    display: inline-block;
+    transform: skewX(15deg); /* テキストの傾きを戻す */
+    font-size: 6vw;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .limit-number {
+    font-size: 12vw;
+    font-weight: 900;
+    margin: 0 5px;
+    color: #ffe600;
+  }
+
+  /* リンク誘導 */
+  .link-hint {
+    position: absolute;
+    bottom: 5vh;
+    color: #ffffff;
+    background-color: rgba(0,0,0,0.6);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 3.5vw;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards 2.5s;
+  }
+
+  /* PC等の調整 */
+  @media (min-aspect-ratio: 3/4) {
+    .store-name { font-size: 2vw; }
+    .campaign { font-size: 3vw; }
+    .price-text { font-size: 8vw; }
+    .price-sub { font-size: 3vw; }
+    .limit-text { font-size: 3vw; }
+    .limit-number { font-size: 6vw; }
+    .link-hint { font-size: 1.5vw; }
+  }
+
+  /* アニメーション定義 */
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px) skewX(-15deg); }
+    to { opacity: 1; transform: translateY(0) skewX(-15deg); }
+  }
+  @keyframes stampIn {
+    0% { opacity: 0; transform: scale(3); }
+    50% { opacity: 1; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulseLight {
+    0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 背景の熱気アニメーション用 -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- テキスト要素 -->
+<div id="text-container">
+  <div class="store-name">JOYFIT24経堂</div>
+  <div class="campaign">新生活応援キャンペーン</div>
+  
+  <!-- 追加した一番目立つ価格 -->
+  <div class="price-box">
+    <span class="price-sub">6カ月</span>
+    <div class="price-text">3,400円<span style="font-size: 5vw;">(税込)</span></div>
+  </div>
+  
+  <div class="limit-box">
+    <div class="limit-text">残り<span class="limit-number">8</span>名限定</div>
+  </div>
+
+  <div class="link-hint">▼ 詳細はリンクをチェック ▼</div>
+</div>
+
+<script>
+  // --- ジムの熱気・エナジーを感じさせるパーティクル（火の粉） ---
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let sparks = [];
+
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class Spark {
+    constructor() {
+      this.reset();
+      this.y = Math.random() * height; 
+    }
+
+    reset() {
+      this.x = Math.random() * width;
+      this.y = height + Math.random() * 100;
+      this.size = Math.random() * 3 + 1;
+      this.speedY = Math.random() * 5 + 2; // 上へ昇る
+      this.speedX = (Math.random() - 0.5) * 2; // 少し左右に揺れる
+      this.life = Math.random() * 0.5 + 0.5; // 不透明度
+      this.decay = Math.random() * 0.01 + 0.005; // 消えていくスピード
+    }
+
+    update() {
+      this.y -= this.speedY;
+      this.x += this.speedX;
+      this.life -= this.decay;
+
+      if (this.life <= 0 || this.y < 0) {
+        this.reset();
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      // 熱気を表す赤〜オレンジのグラデーション色
+      ctx.fillStyle = `rgba(230, 0, 18, ${this.life})`; 
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 80; i++) {
+    sparks.push(new Spark());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    sparks.forEach(spark => {
+      spark.update();
+      spark.draw();
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
+</body>
+</html>
