@@ -133,7 +133,7 @@
     background: linear-gradient(135deg, #e60012, #ff4d00);
     border: 2px solid #fff;
     color: #ffffff;
-    padding: 1.5vh 8vw;
+    padding: 1.5vh 6vw;
     border-radius: 50px;
     box-shadow: 0 0 20px rgba(230,0,18,0.8);
     opacity: 0;
@@ -142,27 +142,16 @@
   }
 
   .limit-text {
-    font-size: 6vw;
+    font-size: 5vw; /* 文字が長くなったため少し調整 */
     font-weight: bold;
     margin: 0;
-  }
-
-  .limit-number {
-    font-size: 10vw;
-  }
-
-  .limit-number {
-    font-size: 12vw;
-    font-weight: 900;
-    margin: 0 5px;
-    color: #ffe600;
-    text-shadow: 0 0 10px rgba(255, 230, 0, 0.8);
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
   }
 
   /* リンク誘導 */
   .link-hint {
     color: #cccccc;
-    font-size: 3.5vw;
+    font-size: 3vw; /* 文字数が増えたので少し調整 */
     font-weight: bold;
     opacity: 0;
     animation: fadeIn 1s ease-out forwards 2.5s;
@@ -181,8 +170,7 @@
     .price-main { font-size: 8vw; }
     .price-sub { font-size: 2vw; }
     .price-tax { font-size: 1.5vw; }
-    .limit-text { font-size: 3vw; }
-    .limit-number { font-size: 5vw; }
+    .limit-text { font-size: 2.5vw; }
     .link-hint { font-size: 1.5vw; }
   }
 
@@ -232,10 +220,10 @@
   </div>
   
   <div class="limit-box">
-    <div class="limit-text">残り<span class="limit-number">7</span>名限定</div>
+    <div class="limit-text">定員埋まり次第終了</div>
   </div>
 
-  <div class="link-hint">▼ 詳細はリンクをチェック ▼</div>
+  <div class="link-hint">▼ 詳細は店舗トップページのHPをチェック ▼</div>
   
   <!-- 下部にリンクスタンプを置くための確実な余白 -->
   <div class="spacer"></div>
