@@ -11,13 +11,13 @@
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: #111;
-    /* ジムのマットや鉄板を思わせるカーボン風パターン */
+    /* 背景のCSSのこだわり：真っ黒ベース＋サイバーなダークグリッド */
+    background-color: #050000; 
     background-image: 
-      repeating-linear-gradient(45deg, #1a1a1a 25%, transparent 25%, transparent 75%, #1a1a1a 75%, #1a1a1a),
-      repeating-linear-gradient(45deg, #1a1a1a 25%, #111 25%, #111 75%, #1a1a1a 75%, #1a1a1a);
-    background-position: 0 0, 10px 10px;
-    background-size: 20px 20px;
+      linear-gradient(rgba(230, 0, 18, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(230, 0, 18, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-position: center bottom;
     overflow: hidden;
     font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
   }
@@ -43,10 +43,13 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     pointer-events: none;
+    padding-top: 10vh; /* 上部を少し詰める */
+    padding-bottom: 25vh; /* 下部のリンク用余白を強力に確保 */
+    box-sizing: border-box;
   }
 
   /* 店舗名 */
@@ -65,76 +68,87 @@
     color: #fff;
     font-size: 6vw;
     font-weight: 900;
-    margin-bottom: 3vh;
+    margin-bottom: 4vh;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
     opacity: 0;
     animation: slideDown 0.5s ease-out forwards 0.4s;
   }
 
-  /* --- 追加: 最も目立たせる価格表記 --- */
+  /* --- 変更: 帯バナーをやめてネオン感のあるデザインに --- */
   .price-box {
     position: relative;
-    margin-bottom: 4vh;
+    width: 85vw; /* 画面に収まる幅 */
+    background: rgba(0, 0, 0, 0.6); /* 半透明の黒で背景を少し暗く */
+    border: 3px solid #ff003c; /* ネオンの枠 */
+    border-radius: 15px;
+    padding: 3vh 0;
+    margin-bottom: 5vh;
+    box-shadow: 
+      0 0 15px #ff003c, 
+      inset 0 0 15px #ff003c,
+      0 0 30px rgba(255, 0, 60, 0.4); /* 外側に広がる赤い光 */
     opacity: 0;
-    transform: scale(3);
-    /* スタンプのようにドカンと現れる */
-    animation: stampIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.8s;
+    /* ネオン管が点くようなチカチカ・アニメーション */
+    animation: neonTurnOn 1.5s forwards 0.8s;
   }
   
-  /* 後ろの赤い光彩 */
-  .price-box::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120%;
-    height: 120%;
-    background: radial-gradient(circle, rgba(230,0,18,0.8) 0%, rgba(230,0,18,0) 70%);
-    z-index: -1;
-    animation: pulseLight 1.5s infinite 1.4s;
+  .price-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
-  .price-text {
-    color: #ffe600; /* 目立つイエロー */
+  .price-main {
     font-size: 14vw;
     font-weight: 900;
-    line-height: 1.1;
-    text-shadow: 
-      3px 3px 0 #e60012,
-      -1px -1px 0 #e60012,  
-      1px -1px 0 #e60012,
-      -1px 1px 0 #e60012,
-      1px 1px 0 #e60012,
-      0 10px 20px rgba(0,0,0,0.8);
+    line-height: 1;
     margin: 0;
+    color: #fff; /* 文字自体は白に近く */
+    /* 文字のネオン発光エフェクト */
+    text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 20px #ff003c,
+      0 0 40px #ff003c,
+      0 0 80px #ff003c;
   }
   
   .price-sub {
-    color: #fff;
     font-size: 5vw;
-    display: block;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    margin-bottom: -1vh;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c;
+  }
+
+  .price-tax {
+    font-size: 4vw;
+    color: #fff;
+    text-shadow: 0 0 5px #ff003c, 0 0 10px #ff003c;
   }
 
   /* 限定人数のボックス */
   .limit-box {
-    background: #e60012;
-    border: 3px solid #fff;
+    background: linear-gradient(135deg, #e60012, #ff4d00);
+    border: 2px solid #fff;
     color: #ffffff;
     padding: 1.5vh 8vw;
-    transform: skewX(-15deg); /* ジムらしいスピード感ある斜めデザイン */
-    box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(230,0,18,0.8);
     opacity: 0;
-    animation: slideUp 0.6s ease-out forwards 1.6s;
+    margin-bottom: 1.5vh; 
+    animation: popIn 0.6s ease-out forwards 1.8s;
   }
 
   .limit-text {
-    display: inline-block;
-    transform: skewX(15deg); /* テキストの傾きを戻す */
     font-size: 6vw;
     font-weight: bold;
     margin: 0;
+  }
+
+  .limit-number {
+    font-size: 10vw;
   }
 
   .limit-number {
@@ -142,30 +156,33 @@
     font-weight: 900;
     margin: 0 5px;
     color: #ffe600;
+    text-shadow: 0 0 10px rgba(255, 230, 0, 0.8);
   }
 
   /* リンク誘導 */
   .link-hint {
-    position: absolute;
-    bottom: 5vh;
-    color: #ffffff;
-    background-color: rgba(0,0,0,0.6);
-    padding: 5px 15px;
-    border-radius: 20px;
+    color: #cccccc;
     font-size: 3.5vw;
     font-weight: bold;
     opacity: 0;
     animation: fadeIn 1s ease-out forwards 2.5s;
+    text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  }
+  
+  /* 下部の余白を可視化しないが空間を押し上げるためのスペーサー */
+  .spacer {
+    flex-grow: 1;
   }
 
   /* PC等の調整 */
   @media (min-aspect-ratio: 3/4) {
     .store-name { font-size: 2vw; }
     .campaign { font-size: 3vw; }
-    .price-text { font-size: 8vw; }
-    .price-sub { font-size: 3vw; }
+    .price-main { font-size: 8vw; }
+    .price-sub { font-size: 2vw; }
+    .price-tax { font-size: 1.5vw; }
     .limit-text { font-size: 3vw; }
-    .limit-number { font-size: 6vw; }
+    .limit-number { font-size: 5vw; }
     .link-hint { font-size: 1.5vw; }
   }
 
@@ -174,19 +191,21 @@
     from { opacity: 0; transform: translateY(-50px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(50px) skewX(-15deg); }
-    to { opacity: 1; transform: translateY(0) skewX(-15deg); }
+  
+  /* ネオンがチカチカ点灯するアニメーション */
+  @keyframes neonTurnOn {
+    0% { opacity: 0; }
+    10% { opacity: 1; box-shadow: none; text-shadow: none; }
+    15% { opacity: 0; }
+    25% { opacity: 1; }
+    30% { opacity: 0.2; }
+    100% { opacity: 1; }
   }
-  @keyframes stampIn {
-    0% { opacity: 0; transform: scale(3); }
-    50% { opacity: 1; transform: scale(0.9); }
+  
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    70% { opacity: 1; transform: scale(1.1); }
     100% { opacity: 1; transform: scale(1); }
-  }
-  @keyframes pulseLight {
-    0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-    100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
   }
   @keyframes fadeIn {
     from { opacity: 0; }
@@ -204,10 +223,12 @@
   <div class="store-name">JOYFIT24経堂</div>
   <div class="campaign">新生活応援キャンペーン</div>
   
-  <!-- 追加した一番目立つ価格 -->
+  <!-- ネオン感のある価格バナーに変更 -->
   <div class="price-box">
-    <span class="price-sub">6カ月</span>
-    <div class="price-text">3,400円<span style="font-size: 5vw;">(税込)</span></div>
+    <div class="price-text">
+      <span class="price-sub">6カ月</span>
+      <span class="price-main">3,400円<span class="price-tax">(税込)</span></span>
+    </div>
   </div>
   
   <div class="limit-box">
@@ -215,13 +236,17 @@
   </div>
 
   <div class="link-hint">▼ 詳細はリンクをチェック ▼</div>
+  
+  <!-- 下部にリンクスタンプを置くための確実な余白 -->
+  <div class="spacer"></div>
 </div>
 
 <script>
-  // --- ジムの熱気・エナジーを感じさせるパーティクル（火の粉） ---
+  // --- より燃え上がるリアルな炎のアニメーション ---
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
+  let flames = [];
   let sparks = [];
 
   function resize() {
@@ -231,48 +256,97 @@
   window.addEventListener('resize', resize);
   resize();
 
-  class Spark {
+  // 炎の塊クラス
+  class Flame {
     constructor() {
       this.reset();
-      this.y = Math.random() * height; 
+      this.y = height + Math.random() * 300; // 初期配置
     }
 
     reset() {
       this.x = Math.random() * width;
-      this.y = height + Math.random() * 100;
-      this.size = Math.random() * 3 + 1;
-      this.speedY = Math.random() * 5 + 2; // 上へ昇る
-      this.speedX = (Math.random() - 0.5) * 2; // 少し左右に揺れる
-      this.life = Math.random() * 0.5 + 0.5; // 不透明度
-      this.decay = Math.random() * 0.01 + 0.005; // 消えていくスピード
+      this.y = height + 50; // 画面下から発生
+      this.size = Math.random() * 80 + 30; // 大きめの塊
+      this.speedY = Math.random() * 6 + 3; // 昇るスピード
+      this.speedX = (Math.random() - 0.5) * 2; // 揺らぎ
+      this.life = 1.0;
+      this.decay = Math.random() * 0.015 + 0.005; // 消える速度
+      this.hue = Math.random() * 30; // 0(赤)〜30(オレンジ)の色相
     }
 
     update() {
       this.y -= this.speedY;
       this.x += this.speedX;
+      this.size *= 0.95; // 昇るにつれて小さく
       this.life -= this.decay;
 
-      if (this.life <= 0 || this.y < 0) {
+      if (this.life <= 0 || this.size <= 0.1) {
         this.reset();
       }
     }
 
     draw() {
+      // 炎が重なった部分を明るく発光させる
+      ctx.globalCompositeOperation = 'lighter';
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      // 熱気を表す赤〜オレンジのグラデーション色
-      ctx.fillStyle = `rgba(230, 0, 18, ${this.life})`; 
+      ctx.arc(this.x, this.y, Math.max(0, this.size), 0, Math.PI * 2);
+      
+      const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, Math.max(0, this.size));
+      gradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.life})`);
+      gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);
+      
+      ctx.fillStyle = gradient;
       ctx.fill();
     }
   }
 
-  for (let i = 0; i < 80; i++) {
+  // 飛び散る火の粉クラス
+  class Spark {
+    constructor() {
+      this.reset();
+      this.y = height + Math.random() * 300;
+    }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = height + 50;
+      this.size = Math.random() * 3 + 1;
+      this.speedY = Math.random() * 10 + 5;
+      this.speedX = (Math.random() - 0.5) * 4;
+      this.life = 1.0;
+      this.decay = Math.random() * 0.02 + 0.01;
+    }
+    update() {
+      this.y -= this.speedY;
+      this.x += this.speedX;
+      this.life -= this.decay;
+      if (this.life <= 0) this.reset();
+    }
+    draw() {
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 150, 0, ${this.life})`;
+      ctx.fill();
+    }
+  }
+
+  // 炎と火の粉を生成
+  for (let i = 0; i < 60; i++) {
+    flames.push(new Flame());
+  }
+  for (let i = 0; i < 40; i++) {
     sparks.push(new Spark());
   }
 
   function animate() {
+    // 背景をクリア（CSSの背景を見せるため）
     ctx.clearRect(0, 0, width, height);
 
+    flames.forEach(flame => {
+      flame.update();
+      flame.draw();
+    });
+    
     sparks.forEach(spark => {
       spark.update();
       spark.draw();
